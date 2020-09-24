@@ -24,7 +24,13 @@ const Profile = props => {
         div.header > p,
         div.header > div > a,
         section.fullmap,
-        .box-content > p {
+        .box-content > p,
+        .basefooter-wrap.p-footer,
+        .banner,
+        .teaser,
+        .field.right.recovery,
+        .reg-box,
+        .goto-recovery {
             display: none;
         }
 
@@ -55,6 +61,8 @@ const Profile = props => {
         let style = document.createElement('style');
         style.innerHTML = '${style.replace(/\r?\n?\s/g, "")}';
         document.head.appendChild(style);
+        // document.getElementsByClassName('wrapper')[3].innerHTML += '<div><button onclick="App.Methods.LoginESIA();">4login</button></div>'
+
         document.getElementsByClassName('wrapper')[2].innerHTML += '<div class="logout"><a id="logout"  href="/logout/">Выйти</a></div>'
         true;
     `
@@ -69,7 +77,18 @@ const Profile = props => {
         );
     }
 
-
+    const redirectTo = `
+        let div = document.getElementById('dropdown-user');
+        if(div !== null) {
+            let a = div.getElementsByTagName('a');
+            window.location = a[0].href;    
+        }
+        
+      
+        // document.getElementsByClassName('wrapper')[2].innerHTML += a[0].href 
+      
+        true;
+    `
 
 
 
@@ -81,56 +100,45 @@ const Profile = props => {
                 scrollEnabled={true}
                 showsVerticalScrollIndicator={false}
                 originWhitelist={['*']}
-                source={{ uri: 'http://ag.orb.ru/login' }}
+                source={{ uri: 'http://ag.orb.ru/login/' }}
                 onMessage={(event) => { }}
                 injectedJavaScript={injectedJavaScript}
                 renderLoading={ActivityIndicatorLoadingView}
                 onLoadStart={e => {
-                    refWeb.injectJavaScript(`document.getElementsByTagName('body')[0].style.display = 'none'`)
+                    // refWeb.injectJavaScript(`document.getElementsByTagName('body')[0].style.display = 'none'`)
                 }}
                 onLoadEnd={(e) => {
                     if (e.nativeEvent.url === 'https://ag.orb.ru/') {
-                        const redirectTo = `
-                        let div = document.getElementById('dropdown-user');
-                        let a = div.getElementsByTagName('a');
-                        window.location = a[0].href;
-                        true;
-                    `
-                        refWeb.injectJavaScript(`document.getElementsByTagName('body')[0].style.display = 'block'`)
+                        console.log(2);
+                        // refWeb.injectJavaScript(`document.getElementsByTagName('body')[0].style.display = 'block'`)
                         refWeb.injectJavaScript(redirectTo);
                     }
                 }}
                 onNavigationStateChange={event => {
                     setbutton(false)
-                    // if (event.url === 'https://ag.orb.ru/') {
-                    //     console.log(1);
-                    //     const redirectTo = `
-                    //     // window.location.reload();
-                    //     let div = document.getElementById('dropdown-user');
-                    //     let a = div.getElementsByTagName('a');
-                    //     window.location = a[0].href;
-                    //     // alert(a[0].href)
-                    //     true;
-                    // `
-                    //     refWeb.injectJavaScript(redirectTo);
-
-                    // } else
-                    if (event.url.includes('form') || event.url.includes('cat')) {
+                    if (event.url.includes('form') || event.url.includes('cat') || event.url.includes('points/id')) {
                         refWeb.stopLoading()
                         refWeb.goBack()
-                        //создать edit компонент
-                    } else if (event.url === 'http://ag.orb.ru/login') {
-                        //     const redirectTo = `
-                        //   document.getElementsByClassName('btn.btn-xs.btn-success.full-width')[0].click();
-                        //   true;
-                        // `
-                        //     refWeb.injectJavaScript(redirectTo);
+                        let redirect = `window.location = 'https://ag.orb.ru/'`
+                        refWeb.injectJavaScript(redirect)
+                        // if (event.url.includes('form')) {
+                        //     console.log('form');
+                        //     props.navigation.navigate('Edit', { screen: 'Edit', event, headerBackTitle: 'Назад' })
+                        // }  
+                        if (event.url.includes('points/id') || event.url.includes('form')) {
+                            console.log('points');
+                            props.navigation.navigate('PointCard', { screen: 'PointCard', event, headerBackTitle: 'Назад' })
+                        }
                     } else if (event.url === 'https://esia.gosuslugi.ru/profile/login/') {
                         refWeb.injectJavaScript(`window.location = 'http://ag.orb.ru/login'`)
-                        // props.navigation.navigate('Main', {screen: 'Main'})
                     } else if (event.url.includes('https://ag.orb.ru/points/list/?user')) {
                         setbutton(true)
                     }
+                    // else if (event.url === 'https://ag.orb.ru/') {
+                    //     // refWeb.injectJavaScript(`window.location = 'http://ag.orb.ru/login'; true;`);
+                    //     refWeb.injectJavaScript(redirectTo);
+                    // }
+
                 }}
                 javaScriptEnabled={true}
                 startInLoadingState={true}
@@ -155,7 +163,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
-        position: 'relative'
+        position: 'relative',
+        paddingBottom: 10
     },
 
     logout__button__wrapper: {
@@ -165,7 +174,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginHorizontal: '25%',
         position: 'absolute',
-        bottom: 20
+        bottom: 10
     },
 
     ActivityIndicatorStyle: {

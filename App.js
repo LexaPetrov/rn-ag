@@ -8,6 +8,7 @@ import Main from './src/components/Main';
 import Profile from './src/components/Profile';
 import MapPoints from './src/components/MapPoints';
 import PointCard from './src/components/PointCard';
+import Edit from './src/components/Edit';
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +27,7 @@ export default function App() {
     }
   }
 
-  
+
   function navTab({ navigation, route }) {
     navigation.setOptions({
       headerTitle: getHeaderTitle(route)
@@ -67,15 +68,18 @@ export default function App() {
           name="MapPoints"
           component={MapPoints}
         />
+
         <Tab.Screen
           options={{
             tabBarLabel: 'Профиль',
             tabBarIcon: ({ focused }) => (
               <MaterialIcons name="people" size={24} color={focused ? '#2cd978' : 'gray'} />
-            )
+            ),
+            // tabBarButton: (e) => <View><Text>sasa</Text></View>
           }}
           name="Profile"
           component={Profile}
+
         />
       </Tab.Navigator>
     )

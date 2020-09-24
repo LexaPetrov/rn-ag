@@ -19,8 +19,10 @@ const PointCard = props => {
     }
 
     props.navigation.setOptions({
-        headerTitle: props.route.params.event.title.includes('http') ? 'Обращение' : props.route.params.event.title
+        headerTitle:  'Обращение' 
+        // headerTitle: props.route.params.event.title.includes('http') ? 'Обращение' : props.route.params.event.title
     })
+
     let style = `
         * {
             margin: 0;
@@ -29,6 +31,7 @@ const PointCard = props => {
         main {
             margin: 0;
             padding-top: 10px;
+            padding-bottom: 50px;
         }
         header,
         footer,
@@ -56,9 +59,24 @@ const PointCard = props => {
             text-align: center;
             margin-top: 5px;
         }
+
+        .btn.btn-warning {
+            display: none;
+        }
+
+        .fright {
+            position:relative;
+            overflow:hidden;
+        }
+
+       /* .btn.btn-success {
+            position: absolute;
+            bottom: 10px;
+        } */
+        
      
     `
-
+    
 
 
     const injectedJavaScript = `
