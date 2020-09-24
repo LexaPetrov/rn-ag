@@ -19,7 +19,7 @@ const PointCard = props => {
     }
 
     props.navigation.setOptions({
-        headerTitle:  'Обращение' 
+        headerTitle: 'Обращение'
         // headerTitle: props.route.params.event.title.includes('http') ? 'Обращение' : props.route.params.event.title
     })
 
@@ -41,10 +41,11 @@ const PointCard = props => {
         div.clear,
         br,
         div.center,
-        div.col-md-4.align-right {
+        div.col-md-4.align-right,
+        #drag-and-drop-zone > h3 {
             display: none;
         }
-
+        
         .photo-container {
             display: flex;
             flex-wrap: wrap;
@@ -64,19 +65,33 @@ const PointCard = props => {
             display: none;
         }
 
-        .fright {
-            position:relative;
-            overflow:hidden;
-        }
-
-       /* .btn.btn-success {
-            position: absolute;
-            bottom: 10px;
+        
+        /*.btn.btn-success {
+            position: fixed;
+            bottom: 100px;
         } */
         
+        .wrapper {
+            width: 100%;
+            padding: 0;
+            padding-bottom: 50px;
+        }
+
+        .fright {
+            text-align: center;
+            display: flex:
+            width: 100%;
+            justify-content: center;
+            float: none;
+            position:relative;
+        }
+
+        .flt-lbl-box {
+            margin-top: 10px;
+        }
      
     `
-    
+
 
 
     const injectedJavaScript = `
@@ -84,11 +99,10 @@ const PointCard = props => {
         let style = document.createElement('style');
         style.innerHTML = '${style.replace(/\r?\n?\s/g, "")}';
         document.head.appendChild(style);
-        document.getElementsByClassName('col-md-8')[0].setAttribute('style', 'padding: 0;')
-        document.getElementsByClassName('col-md-8')[1].setAttribute('style', 'padding: 0;')
-        document.getElementsByClassName('col-md-8')[2].setAttribute('style', 'padding: 0;')
-        document.getElementsByClassName('col-md-8')[3].setAttribute('style', 'padding: 0;')
-        document.getElementsByClassName('col-md-8')[4].setAttribute('style', 'padding: 0;')
+        for(let i = 0; i <  document.getElementsByClassName('col-md-8').length; i++) {
+            document.getElementsByClassName('col-md-8')[i].setAttribute('style', 'padding: 0;')
+        }
+      
         true;
     `
 

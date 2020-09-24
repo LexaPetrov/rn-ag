@@ -8,7 +8,6 @@ import Main from './src/components/Main';
 import Profile from './src/components/Profile';
 import MapPoints from './src/components/MapPoints';
 import PointCard from './src/components/PointCard';
-import Edit from './src/components/Edit';
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator();
 
