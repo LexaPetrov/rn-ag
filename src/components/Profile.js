@@ -46,7 +46,7 @@ const Profile = (props) => {
         .ymaps-2-1-77-copyrights-pane,
         div.leaflet-control-container,
         div.map-box.box-content,
-        .map-edit-overlay
+        .map-edit-overlay,
         footer {
             display: none;
         }
@@ -93,8 +93,6 @@ const Profile = (props) => {
         style.innerHTML = '${style.replace(/\r?\n?\s/g, "")}';
         document.head.appendChild(style);
         document.getElementsByClassName('map-edit-overlay')[0].style.display = 'none'
-        // document.getElementsByClassName('wrapper')[3].innerHTML += '<div><button onclick="App.Methods.LoginESIA();">4login</button></div>'
-        // document.getElementsByClassName('wrapper')[2].innerHTML += '<div class="logout"><a id="logout"  href="/logout/">Выйти</a></div>'
         true;
     `
 
@@ -108,6 +106,45 @@ const Profile = (props) => {
         );
     }
 
+    const redirectTo = `
+        let style = document.createElement('style');
+        // style.innerHTML = '* {display: none;} body {display: none}';
+        document.head.appendChild(style);
+        let div = document.getElementById('dropdown-user');
+        if(div !== null) {
+            let a = div.getElementsByTagName('a');
+            // alert(a[0].href)
+            window.location = a[0].href;    
+            for(let i = 0; i < document.getElementsByClassName('wrapper').length; i++){
+                let link = document.createElement('a')
+                link.setAttribute('href', a[0].href)
+                link.setAttribute('style', 'padding: 5px; margin: 0; text-decoration-line:none; font-weight: bolder; width:100%; font-size: 14px; text-align: center;')
+                link.setAttribute('id', 'open__profile')
+                link.innerHTML += '<p style="color: rgb(44,217,120);  text-decoration-line:none;"><b>ОТКРЫТЬ ПРОФИЛЬ 🙍‍♂️</b></p>'
+                let div2 = document.createElement('div')
+                div2.setAttribute('style', ' text-decoration-line:none; color: white;  border-radius: 10%; font-weight:bold; margin: 0; background: white;  align-self: center;  width: 100px; position: fixed; bottom: 0; left: 10; display: flex; flex-direction:column; justify-content: center; ')
+                div2.setAttribute('id', 'open__profile__div')
+                div2.append(link)
+                // div2.innerHTML += '<p><b>ПОСЛЕДНИЕ <br /> АКТИВНОСТИ В <br />ОБРАЩЕНИЯХ</b></p>'
+                document.getElementsByClassName('wrapper')[i].setAttribute('style', 'position: relative;')
+                document.getElementsByClassName('wrapper')[i].append(div2)
+                document.getElementById('open__profile').click()
+
+            }
+
+            
+
+        } 
+        // else {
+        //     window.location.href='http://ag.orb.ru/login'
+        //     let div = document.getElementById('dropdown-user');
+        //     if(div !== null) {
+        //         let a = div.getElementsByTagName('a');
+        //         window.location = a[0].href;    
+        //     } 
+        // }
+    `
+
     return (
         <View style={styles.container}>
             <WebView
@@ -120,30 +157,8 @@ const Profile = (props) => {
                 onMessage={(event) => { }}
                 injectedJavaScript={injectedJavaScript}
                 renderLoading={ActivityIndicatorLoadingView}
-                onLoadStart={e => {
-                    // refWeb.injectJavaScript(`document.getElementsByTagName('body')[0].style.display = 'none'`)
-                }}
                 onLoadEnd={(e) => {
                     if (e.nativeEvent.url === 'https://ag.orb.ru/') {
-                        const redirectTo = `
-                        let style = document.createElement('style');
-                        style.innerHTML = '* {display: none;} body {display: none}';
-                        document.head.appendChild(style);
-                            let div = document.getElementById('dropdown-user');
-                            if(div !== null) {
-                                let a = div.getElementsByTagName('a');
-                                window.location = a[0].href;    
-                            } 
-                            // else {
-                            //     window.location.href='http://ag.orb.ru/login'
-                            //     let div = document.getElementById('dropdown-user');
-                            //     if(div !== null) {
-                            //         let a = div.getElementsByTagName('a');
-                            //         window.location = a[0].href;    
-                            //     } 
-                            // }
-                      
-                    `
                         refWeb.injectJavaScript(redirectTo);
                     }
                 }}
@@ -152,58 +167,31 @@ const Profile = (props) => {
                     console.log('Profile', event.url);
                     if (event.url.includes('form') || event.url.includes('cat') || event.url.includes('points/id')) {
                         refWeb.stopLoading()
-                        // refWeb.goBack()
-                        // let redirect = `window.location = 'https://ag.orb.ru/'`
-                        // refWeb.injectJavaScript(redirect)
-                        // if (event.url.includes('form')) {
-                        //     console.log('form');
-                        //     props.navigation.navigate('Edit', { screen: 'Edit', event, headerBackTitle: 'Назад' })
-                        // }  
                         if (event.url.includes('points/id') || event.url.includes('form')) {
                             props.setModalVisible && props.setModalVisible(false)
                             props.navigation.navigate('PointCard', { screen: 'PointCard', event, headerBackTitle: 'Назад' })
-                            // console.log(event.url);
-                            // refWeb.injectJavaScript(`window.location = '${event.url}'`)
                         }
                     } else if (event.url === 'https://esia.gosuslugi.ru/profile/login/') {
                         refWeb.injectJavaScript(`window.location = 'http://ag.orb.ru/login'`)
                     } else if (event.url.includes('https://ag.orb.ru/points/list/?user' || event.url === 'https://ag.orb.ru/')) {
                         setbutton(true)
                     } else if (event.url === 'https://ag.orb.ru/') {
-                        const redirectTo = `
-                                let style = document.createElement('style');
-                                style.innerHTML = '* {display: none;} body {display: none}';
-                                document.head.appendChild(style);
-                                    let div = document.getElementById('dropdown-user');
-                                    if(div !== null) {
-                                        let a = div.getElementsByTagName('a');
-                                        window.location = a[0].href;    
-                                    } 
-                                    // else {
-                                    //     window.location.href='http://ag.orb.ru/login'
-                                    //     let div = document.getElementById('dropdown-user');
-                                    //     if(div !== null) {
-                                    //         let a = div.getElementsByTagName('a');
-                                    //         window.location = a[0].href;    
-                                    //     } 
-                                    // }
-                              
-                            `
-                        refWeb.injectJavaScript(redirectTo);
-                    } else if (event.url === 'https://ag.orb.ru/map#create') {
-                        props.navigation.navigate('MapPoints', { screen: 'MapPoints', link: 'https://ag.orb.ru/map#create', headerBackTitle: 'Назад' })
-                        props.setModalVisible(false)
+                        // refWeb.injectJavaScript(`window.location = 'http://ag.orb.ru/login'`)
+                        // refWeb.injectJavaScript(redirectTo);
+                        refWeb.goBack()
+                        // refWeb.goForward()
+                        setbutton(true)
                     }
                 }}
+                startInLoadingState
                 javaScriptEnabled={true}
-                startInLoadingState={true}
                 scalesPageToFit={false}
+                onError={() => console.log('err')}
             />
-            <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+            <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 60 }}>
                 {
                     button && <View style={styles.logout__button__wrapper}>
                         <TouchableOpacity onPress={() => {
-                            // refWeb.injectJavaScript(`document.getElementById('logout').click()`)
                             refWeb.injectJavaScript(`window.location.href='/logout'`)
                             props.setModalVisible && props.setModalVisible(false)
                             !props.navigation.navigate('Main', { screen: 'Main' })
@@ -213,14 +201,22 @@ const Profile = (props) => {
                 {
                     button && <View style={styles.logout__button__wrapper}>
                         <TouchableOpacity onPress={() => {
-
-                            //  props.navigation.navigate('MapPoints', { screen: 'MapPoints', link: 'https://ag.orb.ru/map#create', headerBackTitle: 'Назад' })
-                            refWeb.injectJavaScript(`window.location = "https://ag.orb.ru/map#create"`)
-                            // refWeb.stopLoading()
-                            // refWeb.goBack()
-                            //  props.setModalVisible(false)
+                            props.navigation.navigate('MapPoints', { screen: 'MapPoints', link: 'https://ag.orb.ru/map#create', headerBackTitle: 'Назад' })
+                            props.setModalVisible && props.setModalVisible(false)
                             // !props.navigation.navigate('Main', { screen: 'Main' })
                         }}><View style={styles.logout__text__wrapper}><Text style={styles.logout__text} >Создать обращение</Text></View></TouchableOpacity>
+                    </View>
+                }
+                {
+                    button && <View style={styles.logout__button__wrapper}>
+                        <TouchableOpacity onPress={() => {
+                            refWeb.injectJavaScript(`
+                                let div = document.getElementById('dropdown-user');
+                                let a = div.getElementsByTagName('a');
+                                window.location = a[0].href;   
+                            `)
+                            // refWeb.injectJavaScript(`document.getElementById('open__profile').click(); true;`)
+                        }}><View style={styles.logout__text__wrapper}><Text style={styles.logout__text} >Профиль</Text></View></TouchableOpacity>
                     </View>
                 }
             </View>
@@ -245,7 +241,6 @@ const styles = StyleSheet.create({
     logout__text__wrapper: {
         color: '#2cd978',
         width: '100%',
-        // marginHorizontal: '25%',
         borderBottomColor: '#2cd978',
         borderBottomWidth: 1,
         display: 'flex',

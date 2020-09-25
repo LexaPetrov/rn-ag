@@ -5,7 +5,6 @@ import Profile from './Profile';
 
 const CreateModal = props => {
     const [modalVisible, setModalVisible] = useState(false);
-
     return (
         <>
             <TouchableOpacity onPress={() => { setModalVisible(true) }}>
@@ -34,8 +33,6 @@ const CreateModal = props => {
 
     )
 }
-
-
 
 const styles = StyleSheet.create({
     content: {

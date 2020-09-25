@@ -35,6 +35,7 @@ const MapPoints = props => {
     .ymaps-2-1-77-copyrights-pane,
     div.leaflet-control-container,
     div.map-box.box-content,
+    .map-edit-overlay,
     footer {
         display: none;
     }
@@ -96,7 +97,7 @@ const MapPoints = props => {
                 bounces={false}
                 showsVerticalScrollIndicator={false}
                 onNavigationStateChange={(event) => {
-                    console.log('event url = ', event.url);
+                    // console.log('event url = ', event.url);
                     if (event.url !== 'https://ag.orb.ru/map' && !event.url.includes('map#create') && event.url.includes('points/id')) {
                         refWeb.stopLoading()
                         refWeb.goBack()

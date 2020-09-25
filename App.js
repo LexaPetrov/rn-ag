@@ -46,7 +46,6 @@ export default function App() {
             margin: 0,
             padding: 0,
             paddingLeft: 0,
-            // fontWeight: "bold",
           },
           labelPosition: 'below-icon'
         }}
