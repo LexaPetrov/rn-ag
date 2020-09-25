@@ -39,6 +39,9 @@ const MapPoints = props => {
     footer {
         display: none;
     }
+    .map-edit-overlay {
+        opacity: 0;
+    }
 `
     const injectedJavaScript = `
         let meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta);
@@ -58,6 +61,7 @@ const MapPoints = props => {
             window.scroll(0, window.pageXOffset)
         }
         document.getElementsByClassName('map-edit-overlay')[0].style.display = 'none'
+        document.getElementsByClassName('map-edit-overlay')[0].setAttribute('style', 'display: none;')
         document.addEventListener('scroll', scrollEventHandler, false);
         document.getElementById('scrollbar').style.display = 'block';
         document.body.style.overflow = 'hidden';

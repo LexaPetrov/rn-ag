@@ -60,6 +60,10 @@ const Profile = (props) => {
             position: relative;
         }
 
+        .map-edit-overlay {
+            opacity: 0;
+        }
+
         #logout {
             position: absolute;
             left: 9999px;
@@ -118,7 +122,7 @@ const Profile = (props) => {
             for(let i = 0; i < document.getElementsByClassName('wrapper').length; i++){
                 let link = document.createElement('a')
                 link.setAttribute('href', a[0].href)
-                link.setAttribute('style', 'padding: 5px; margin: 0; text-decoration-line:none; font-weight: bolder; width:100%; font-size: 14px; text-align: center;')
+                link.setAttribute('style', ' padding: 5px; margin: 0; text-decoration-line:none; font-weight: bolder; width:100%; font-size: 14px; text-align: center;')
                 link.setAttribute('id', 'open__profile')
                 link.innerHTML += '<p style="color: rgb(44,217,120);  text-decoration-line:none;"><b>ОТКРЫТЬ ПРОФИЛЬ 🙍‍♂️</b></p>'
                 let div2 = document.createElement('div')
@@ -128,6 +132,8 @@ const Profile = (props) => {
                 // div2.innerHTML += '<p><b>ПОСЛЕДНИЕ <br /> АКТИВНОСТИ В <br />ОБРАЩЕНИЯХ</b></p>'
                 document.getElementsByClassName('wrapper')[i].setAttribute('style', 'position: relative;')
                 document.getElementsByClassName('wrapper')[i].append(div2)
+                document.getElementsByClassName('map-edit-overlay')[0].style.display = 'none'
+                document.getElementsByClassName('map-edit-overlay')[0].setAttribute('style', 'display: none;')
                 document.getElementById('open__profile').click()
 
             }

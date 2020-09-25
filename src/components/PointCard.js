@@ -72,15 +72,16 @@ const PointCard = props => {
         } */
         
         .wrapper {
-            max-width: 90%;
+            width: 90%;
             padding: 0;
             padding-bottom: 50px;
+            overflow: hidden;
         }
 
         .fright {
             text-align: center;
             display: flex:
-            width: 100%;
+            max-width: 90%;
             justify-content: center;
             float: none;
             position:relative;
