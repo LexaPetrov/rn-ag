@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, ActivityIndicator, StyleSheet, Button, TouchableOpacity } from 'react-native'
 import WebView from 'react-native-webview'
+import MapPoints from './MapPoints'
 
-const Profile = props => {
+const Profile = (props) => {
     const [button, setbutton] = useState(false)
+
     let refWeb = null
     let style = `
         * {
@@ -30,7 +32,22 @@ const Profile = props => {
         .teaser,
         .field.right.recovery,
         .reg-box,
-        .goto-recovery {
+        .goto-recovery,
+        .map-edit-overlay {
+            display: none;
+        }
+
+        header,
+        div.col-md-12.col-sm-12.align-left,
+        .ymaps-2-1-77-map-copyrights-promo,
+        .ymaps-2-1-77-copyright__wrap,
+        div.leaflet-control-attribution.leaflet-control,
+        div.leaflet-bar.leaflet-control,
+        .ymaps-2-1-77-copyrights-pane,
+        div.leaflet-control-container,
+        div.map-box.box-content,
+        .map-edit-overlay
+        footer {
             display: none;
         }
 
@@ -75,9 +92,9 @@ const Profile = props => {
         let style = document.createElement('style');
         style.innerHTML = '${style.replace(/\r?\n?\s/g, "")}';
         document.head.appendChild(style);
+        document.getElementsByClassName('map-edit-overlay')[0].style.display = 'none'
         // document.getElementsByClassName('wrapper')[3].innerHTML += '<div><button onclick="App.Methods.LoginESIA();">4login</button></div>'
-
-        document.getElementsByClassName('wrapper')[2].innerHTML += '<div class="logout"><a id="logout"  href="/logout/">Выйти</a></div>'
+        // document.getElementsByClassName('wrapper')[2].innerHTML += '<div class="logout"><a id="logout"  href="/logout/">Выйти</a></div>'
         true;
     `
 
@@ -90,21 +107,6 @@ const Profile = props => {
             />
         );
     }
-
-    const redirectTo = `
-        let div = document.getElementById('dropdown-user');
-        if(div !== null) {
-            let a = div.getElementsByTagName('a');
-            window.location = a[0].href;    
-        }
-        
-      
-        // document.getElementsByClassName('wrapper')[2].innerHTML += a[0].href 
-      
-        true;
-    `
-
-
 
     return (
         <View style={styles.container}>
@@ -123,75 +125,127 @@ const Profile = props => {
                 }}
                 onLoadEnd={(e) => {
                     if (e.nativeEvent.url === 'https://ag.orb.ru/') {
-                        // refWeb.injectJavaScript(`document.getElementsByTagName('body')[0].style.display = 'block'`)
+                        const redirectTo = `
+                        let style = document.createElement('style');
+                        style.innerHTML = '* {display: none;} body {display: none}';
+                        document.head.appendChild(style);
+                            let div = document.getElementById('dropdown-user');
+                            if(div !== null) {
+                                let a = div.getElementsByTagName('a');
+                                window.location = a[0].href;    
+                            } 
+                            // else {
+                            //     window.location.href='http://ag.orb.ru/login'
+                            //     let div = document.getElementById('dropdown-user');
+                            //     if(div !== null) {
+                            //         let a = div.getElementsByTagName('a');
+                            //         window.location = a[0].href;    
+                            //     } 
+                            // }
+                      
+                    `
                         refWeb.injectJavaScript(redirectTo);
                     }
                 }}
                 onNavigationStateChange={event => {
                     setbutton(false)
+                    console.log('Profile', event.url);
                     if (event.url.includes('form') || event.url.includes('cat') || event.url.includes('points/id')) {
                         refWeb.stopLoading()
-                        refWeb.goBack()
-                        let redirect = `window.location = 'https://ag.orb.ru/'`
-                        refWeb.injectJavaScript(redirect)
+                        // refWeb.goBack()
+                        // let redirect = `window.location = 'https://ag.orb.ru/'`
+                        // refWeb.injectJavaScript(redirect)
                         // if (event.url.includes('form')) {
                         //     console.log('form');
                         //     props.navigation.navigate('Edit', { screen: 'Edit', event, headerBackTitle: 'Назад' })
                         // }  
                         if (event.url.includes('points/id') || event.url.includes('form')) {
+                            props.setModalVisible && props.setModalVisible(false)
                             props.navigation.navigate('PointCard', { screen: 'PointCard', event, headerBackTitle: 'Назад' })
+                            // console.log(event.url);
+                            // refWeb.injectJavaScript(`window.location = '${event.url}'`)
                         }
                     } else if (event.url === 'https://esia.gosuslugi.ru/profile/login/') {
                         refWeb.injectJavaScript(`window.location = 'http://ag.orb.ru/login'`)
-                    } else if (event.url.includes('https://ag.orb.ru/points/list/?user')) {
+                    } else if (event.url.includes('https://ag.orb.ru/points/list/?user' || event.url === 'https://ag.orb.ru/')) {
                         setbutton(true)
+                    } else if (event.url === 'https://ag.orb.ru/') {
+                        const redirectTo = `
+                                let style = document.createElement('style');
+                                style.innerHTML = '* {display: none;} body {display: none}';
+                                document.head.appendChild(style);
+                                    let div = document.getElementById('dropdown-user');
+                                    if(div !== null) {
+                                        let a = div.getElementsByTagName('a');
+                                        window.location = a[0].href;    
+                                    } 
+                                    // else {
+                                    //     window.location.href='http://ag.orb.ru/login'
+                                    //     let div = document.getElementById('dropdown-user');
+                                    //     if(div !== null) {
+                                    //         let a = div.getElementsByTagName('a');
+                                    //         window.location = a[0].href;    
+                                    //     } 
+                                    // }
+                              
+                            `
+                        refWeb.injectJavaScript(redirectTo);
+                    } else if (event.url === 'https://ag.orb.ru/map#create') {
+                        props.navigation.navigate('MapPoints', { screen: 'MapPoints', link: 'https://ag.orb.ru/map#create', headerBackTitle: 'Назад' })
+                        props.setModalVisible(false)
                     }
-                    // else if (event.url === 'https://ag.orb.ru/') {
-                    //     // refWeb.injectJavaScript(`window.location = 'http://ag.orb.ru/login'; true;`);
-                    //     refWeb.injectJavaScript(redirectTo);
-                    // }
-
                 }}
                 javaScriptEnabled={true}
                 startInLoadingState={true}
                 scalesPageToFit={false}
             />
-            {
-                button && <View style={styles.logout__button__wrapper}>
-                    <TouchableOpacity  onPress={() => {
-                        refWeb.injectJavaScript(`document.getElementById('logout').click()`)
-                        props.navigation.navigate('Main', { screen: 'Main' })
-                    }}><View style={styles.logout__text__wrapper}><Text style={styles.logout__text} >Выйти</Text></View></TouchableOpacity>
-                </View>
-            }
+            <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+                {
+                    button && <View style={styles.logout__button__wrapper}>
+                        <TouchableOpacity onPress={() => {
+                            // refWeb.injectJavaScript(`document.getElementById('logout').click()`)
+                            refWeb.injectJavaScript(`window.location.href='/logout'`)
+                            props.setModalVisible && props.setModalVisible(false)
+                            !props.navigation.navigate('Main', { screen: 'Main' })
+                        }}><View style={styles.logout__text__wrapper}><Text style={styles.logout__text} >Выйти</Text></View></TouchableOpacity>
+                    </View>
+                }
+                {
+                    button && <View style={styles.logout__button__wrapper}>
+                        <TouchableOpacity onPress={() => {
 
+                            //  props.navigation.navigate('MapPoints', { screen: 'MapPoints', link: 'https://ag.orb.ru/map#create', headerBackTitle: 'Назад' })
+                            refWeb.injectJavaScript(`window.location = "https://ag.orb.ru/map#create"`)
+                            // refWeb.stopLoading()
+                            // refWeb.goBack()
+                            //  props.setModalVisible(false)
+                            // !props.navigation.navigate('Main', { screen: 'Main' })
+                        }}><View style={styles.logout__text__wrapper}><Text style={styles.logout__text} >Создать обращение</Text></View></TouchableOpacity>
+                    </View>
+                }
+            </View>
         </View>
-
     )
 }
 
-//https://esia.gosuslugi.ru/idp/rlogin
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
         position: 'relative',
-        // paddingBottom: 10
+        paddingBottom: 30
     },
 
     logout__button__wrapper: {
         color: '#2cd978',
         display: 'flex',
         justifyContent: 'center',
-        // marginHorizontal: '25%',
-        // backgroundColor:'red'
-        // bottom: 10
     },
 
     logout__text__wrapper: {
         color: '#2cd978',
-        width:'50%',
-        marginHorizontal: '25%',
+        width: '100%',
+        // marginHorizontal: '25%',
         borderBottomColor: '#2cd978',
         borderBottomWidth: 1,
         display: 'flex',

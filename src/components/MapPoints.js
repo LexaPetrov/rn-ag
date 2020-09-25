@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import WebView from 'react-native-webview'
-import { ActivityIndicator, StyleSheet, Linking, View, Text, StatusBar, Platform } from 'react-native'
+import { ActivityIndicator, StyleSheet, View, StatusBar, Platform } from 'react-native'
 
 const MapPoints = props => {
     let style = `
@@ -52,17 +52,15 @@ const MapPoints = props => {
             document.getElementsByClassName('ymaps-2-1-77-map')[2].style.height = '1500px'
             document.getElementsByClassName('ymaps-2-1-77-map')[3].style.height = '1500px'
         }, 200)
-        // alert(localStorage)
         true;
         let scrollEventHandler = function() {
             window.scroll(0, window.pageXOffset)
-          }
+        }
+        document.getElementsByClassName('map-edit-overlay')[0].style.display = 'none'
         document.addEventListener('scroll', scrollEventHandler, false);
         document.getElementById('scrollbar').style.display = 'block';
         document.body.style.overflow = 'hidden';
     `
-
-
     function ActivityIndicatorLoadingView() {
         return (
             <ActivityIndicator
@@ -72,15 +70,14 @@ const MapPoints = props => {
             />
         );
     }
-
     let refWeb = null
-
     useEffect(() => {
         Platform.OS === 'ios' && StatusBar.setBarStyle('dark-content');
     })
-
-
-
+    const [map_link, setLink] = useState(undefined)
+    useEffect(() => {
+        props.route.params !== undefined ? setLink(props.route.params.link) : null
+    }, [props])
     return (
         <View style={styles.webview__wrapper}>
             <WebView
@@ -88,21 +85,24 @@ const MapPoints = props => {
                 scrollEnabled={false}
                 originWhitelist={['*']}
                 ref={webView => { refWeb = webView; }}
-                source={{ uri: 'https://ag.orb.ru/map' }}
+                source={{
+                    uri: map_link !== undefined ? map_link : 'https://ag.orb.ru/map'
+                }}
                 onMessage={(event) => { }}
                 injectedJavaScript={injectedJavaScript}
                 renderLoading={ActivityIndicatorLoadingView}
                 javaScriptEnabled={true}
-                startInLoadingState={true}
                 scalesPageToFit={true}
                 bounces={false}
                 showsVerticalScrollIndicator={false}
-                // allowsBackForwardNavigationGestures
                 onNavigationStateChange={(event) => {
-                    if (event.url !== 'https://ag.orb.ru/map') {
+                    console.log('event url = ', event.url);
+                    if (event.url !== 'https://ag.orb.ru/map' && !event.url.includes('map#create') && event.url.includes('points/id')) {
                         refWeb.stopLoading()
                         refWeb.goBack()
                         props.navigation.navigate('PointCard', { screen: 'PointCard', event, headerBackTitle: 'Назад' })
+                    } else if (event.url.includes('form/point')) {
+                        props.navigation.replace('PointCard', { screen: 'PointCard', event, headerBackTitle: 'Назад' })
                     }
                 }}
             />

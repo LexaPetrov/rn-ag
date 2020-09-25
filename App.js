@@ -8,6 +8,8 @@ import Main from './src/components/Main';
 import Profile from './src/components/Profile';
 import MapPoints from './src/components/MapPoints';
 import PointCard from './src/components/PointCard';
+import CreateModal from './src/components/CreateModal';
+
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator();
 
@@ -21,6 +23,8 @@ export default function App() {
         return 'Карта обращений'
       case 'Profile':
         return 'Профиль'
+      case 'Create':
+        return 'Создать'
       case 'Все обращения':
         return 'Все обращения'
     }
@@ -46,6 +50,7 @@ export default function App() {
           },
           labelPosition: 'below-icon'
         }}
+        initialRouteName='Main'
       >
         <Tab.Screen
           options={{
@@ -56,6 +61,17 @@ export default function App() {
           }}
           name="Main"
           component={Main}
+        />
+
+        <Tab.Screen name="CreateModal" component={Profile}
+          options={{
+            tabBarButton: () => (<CreateModal navigation={navigation} />),
+            tabBarLabel: 'Создать',
+            tabBarIcon: ({ focused }) => (
+              <MaterialCommunityIcons name="map-marker-multiple" size={24} color={focused ? '#2cd978' : 'gray'} />
+            )
+          }}
+
         />
         <Tab.Screen
           options={{
@@ -68,18 +84,17 @@ export default function App() {
           component={MapPoints}
         />
 
-        <Tab.Screen
+        {/* Второй вариант */}
+         {/* <Tab.Screen
           options={{
             tabBarLabel: 'Профиль',
             tabBarIcon: ({ focused }) => (
               <MaterialIcons name="people" size={24} color={focused ? '#2cd978' : 'gray'} />
             ),
-            // tabBarButton: (e) => <View><Text>sasa</Text></View>
           }}
           name="Profile"
           component={Profile}
-
-        />
+        />  */}
       </Tab.Navigator>
     )
   }
@@ -110,6 +125,16 @@ export default function App() {
             },
             headerTintColor: Platform.OS === 'android' ? 'white' : '#2cd978',
             headerTitle: 'PointCard',
+            headerTruncatedBackTitle: false
+          }}
+        />
+        <Stack.Screen name="MapPoints" component={MapPoints}
+          options={{
+            headerStyle: {
+              backgroundColor: Platform.OS === 'android' ? '#2cd978' : 'white'
+            },
+            headerTintColor: Platform.OS === 'android' ? 'white' : '#2cd978',
+            headerTitle: 'Создать обращение',
             headerTruncatedBackTitle: false
           }}
         />

@@ -66,7 +66,6 @@ const Main = props => {
     }
 
     let refWeb = null
-
     return (
         <View style={styles.webview__wrapper}>
             <WebView
@@ -83,6 +82,7 @@ const Main = props => {
                 startInLoadingState={true}
                 scalesPageToFit={false}
                 onNavigationStateChange={(event) => {
+
                     Platform.OS === 'ios' && StatusBar.setBarStyle('dark-content');
                     // console.log('Main - ', event.url);
                     if (!event.url.includes('https://ag.orb.ru/points/list') && !event.url.includes('cat') && !event.url.includes('map')) {
