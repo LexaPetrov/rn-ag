@@ -72,7 +72,7 @@ const PointCard = props => {
         } */
         
         .wrapper {
-            width: 100%;
+            max-width: 90%;
             padding: 0;
             padding-bottom: 50px;
         }
@@ -120,6 +120,8 @@ const PointCard = props => {
             javaScriptEnabled={true}
             startInLoadingState={true}
             scalesPageToFit={false}
+            onNavigationStateChange={event => {
+            }}
         />
     )
 }

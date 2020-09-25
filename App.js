@@ -13,16 +13,16 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   const getHeaderTitle = route => {
-    const routeName = route.state ? route.state.routes[route.state.index].name : 'Последние обращения'
+    const routeName = route.state ? route.state.routes[route.state.index].name : 'Все обращения'
     switch (routeName) {
       case 'Main':
-        return 'Последние обращения'
+        return 'Все обращения'
       case 'MapPoints':
         return 'Карта обращений'
       case 'Profile':
         return 'Профиль'
-      case 'Последние обращения':
-        return 'Последние обращения'
+      case 'Все обращения':
+        return 'Все обращения'
     }
   }
 
@@ -49,7 +49,7 @@ export default function App() {
       >
         <Tab.Screen
           options={{
-            tabBarLabel: 'Последние',
+            tabBarLabel: 'Обращения',
             tabBarIcon: ({ focused }) => (
               <FontAwesome5 name="newspaper" size={24} color={focused ? '#2cd978' : 'gray'} />
             ),

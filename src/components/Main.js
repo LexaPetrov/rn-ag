@@ -19,13 +19,28 @@ const Main = props => {
         div.header,
         div.clear,
         br,
-        div.center {
+        div.center,
+        .fullmap {
             display: none;
         }
         .card-block > h3 > a, .item-icon {
             pointer-events: none;
             cursor: default;
             text-decoration: none;
+        }
+
+        .pagination {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .pagination > a, .pagination > strong {
+            width: 44px;
+            padding: 0px 0px !important;
+            margin-right: 0px;
         }
     `
 
@@ -50,41 +65,45 @@ const Main = props => {
         );
     }
 
-    useEffect(() => {
-        Platform.OS === 'ios' && StatusBar.setBarStyle('dark-content');
-    })
-
     let refWeb = null
 
-
     return (
-        <WebView
-            ref={webView => { refWeb = webView; }}
-            useWebKit
-            scrollEnabled={true}
-            showsVerticalScrollIndicator={false}
-            originWhitelist={['*']}
-            source={{ uri: 'https://ag.orb.ru/' }}
-            onMessage={(event) => { }}
-            injectedJavaScript={injectedJavaScript}
-            renderLoading={ActivityIndicatorLoadingView}
-            javaScriptEnabled={true}
-            startInLoadingState={true}
-            scalesPageToFit={false}
-            onNavigationStateChange={(event) => {
-                if (event.url !== 'https://ag.orb.ru/' && !event.url.includes('cat') && !event.url.includes('map')) {
-                    refWeb.stopLoading()
-                    refWeb.goBack()
-                    let redirect = `window.location = 'https://ag.orb.ru/'`
-                    refWeb.injectJavaScript(redirect)
-                    props.navigation.navigate('PointCard', { screen: 'PointCard', event, headerBackTitle: 'Назад' })
-                }
-            }}
-        />
+        <View style={styles.webview__wrapper}>
+            <WebView
+                ref={webView => { refWeb = webView; }}
+                useWebKit
+                scrollEnabled={true}
+                showsVerticalScrollIndicator={false}
+                originWhitelist={['*']}
+                source={{ uri: 'https://ag.orb.ru/points/list' }}
+                onMessage={(event) => { }}
+                injectedJavaScript={injectedJavaScript}
+                renderLoading={ActivityIndicatorLoadingView}
+                javaScriptEnabled={true}
+                startInLoadingState={true}
+                scalesPageToFit={false}
+                onNavigationStateChange={(event) => {
+                    Platform.OS === 'ios' && StatusBar.setBarStyle('dark-content');
+                    // console.log('Main - ', event.url);
+                    if (!event.url.includes('https://ag.orb.ru/points/list') && !event.url.includes('cat') && !event.url.includes('map')) {
+                        refWeb.stopLoading()
+                        refWeb.goBack()
+                        let redirect = `window.location = 'https://ag.orb.ru/points/list'`
+                        refWeb.injectJavaScript(redirect)
+                        props.navigation.navigate('PointCard', { screen: 'PointCard', event, headerBackTitle: 'Назад' })
+                    }
+                }}
+            />
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
+    webview__wrapper: {
+        flex: 1,
+        position: 'relative'
+    },
+
     ActivityIndicatorStyle: {
         flex: 1,
         position: 'absolute',

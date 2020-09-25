@@ -54,6 +54,20 @@ const Profile = props => {
             text-decoration: none;
         }
 
+        .pagination {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .pagination > a, .pagination > strong {
+            width: 44px;
+            padding: 0px 0px !important;
+            margin-right: 0px;
+        }
+
     `
 
     const injectedJavaScript = `
@@ -109,7 +123,6 @@ const Profile = props => {
                 }}
                 onLoadEnd={(e) => {
                     if (e.nativeEvent.url === 'https://ag.orb.ru/') {
-                        console.log(2);
                         // refWeb.injectJavaScript(`document.getElementsByTagName('body')[0].style.display = 'block'`)
                         refWeb.injectJavaScript(redirectTo);
                     }
@@ -126,7 +139,6 @@ const Profile = props => {
                         //     props.navigation.navigate('Edit', { screen: 'Edit', event, headerBackTitle: 'Назад' })
                         // }  
                         if (event.url.includes('points/id') || event.url.includes('form')) {
-                            console.log('points');
                             props.navigation.navigate('PointCard', { screen: 'PointCard', event, headerBackTitle: 'Назад' })
                         }
                     } else if (event.url === 'https://esia.gosuslugi.ru/profile/login/') {
@@ -146,10 +158,10 @@ const Profile = props => {
             />
             {
                 button && <View style={styles.logout__button__wrapper}>
-                    <Button color='#2cd978' title='Выйти' onPress={() => {
+                    <TouchableOpacity  onPress={() => {
                         refWeb.injectJavaScript(`document.getElementById('logout').click()`)
                         props.navigation.navigate('Main', { screen: 'Main' })
-                    }}></Button>
+                    }}><View style={styles.logout__text__wrapper}><Text style={styles.logout__text} >Выйти</Text></View></TouchableOpacity>
                 </View>
             }
 
@@ -164,17 +176,35 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         position: 'relative',
-        paddingBottom: 10
+        // paddingBottom: 10
     },
 
     logout__button__wrapper: {
         color: '#2cd978',
-        width: '50%',
         display: 'flex',
         justifyContent: 'center',
+        // marginHorizontal: '25%',
+        // backgroundColor:'red'
+        // bottom: 10
+    },
+
+    logout__text__wrapper: {
+        color: '#2cd978',
+        width:'50%',
         marginHorizontal: '25%',
-        position: 'absolute',
-        bottom: 10
+        borderBottomColor: '#2cd978',
+        borderBottomWidth: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        paddingVertical: 5,
+        paddingHorizontal: 5
+    },
+
+    logout__text: {
+        color: '#2cd978',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        fontSize: 16
     },
 
     ActivityIndicatorStyle: {
