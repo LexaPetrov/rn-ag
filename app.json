@@ -1,12 +1,13 @@
 {
   "expo": {
-    "name": "rn-ag",
+    "name": "Активный гражданин Оренбургской области",
     "slug": "rn-ag",
+    "description": "ag.orb.ru portal app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.jpg",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -20,7 +21,7 @@
       "bundleIdentifier": "com.petrovlexax.rn-ag"
     },
     "android": {
-      "package": "com.lexapetrov.rn_ag"
+      "package": "com.lexapetrov.rnag"
     },
     "web": {
       "favicon": "./assets/favicon.png"

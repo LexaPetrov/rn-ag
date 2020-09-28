@@ -20,7 +20,6 @@ const CreateModal = props => {
                     onBackdropPress={() => setModalVisible(false)}
                     style={styles.contentView}
                     onBackButtonPress={() => setModalVisible(false)}
-
                 >
                     <View style={styles.content}>
                         <TouchableOpacity onPress={() => setModalVisible(false)}>
