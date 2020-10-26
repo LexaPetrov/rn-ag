@@ -3,7 +3,7 @@
     "name": "Активный гражданин Оренбургской области",
     "slug": "rn-ag",
     "description": "ag.orb.ru portal app",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -21,7 +21,8 @@
       "bundleIdentifier": "com.petrovlexax.rn-ag"
     },
     "android": {
-      "package": "com.lexapetrov.rnag"
+      "package": "com.lexapetrov.rnag",
+      "versionCode": 3
     },
     "web": {
       "favicon": "./assets/favicon.png"

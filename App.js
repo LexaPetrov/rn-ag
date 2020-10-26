@@ -84,7 +84,7 @@ export default function App() {
         />
 
         {/* Второй вариант */}
-         {/* <Tab.Screen
+        {/* <Tab.Screen
           options={{
             tabBarLabel: 'Профиль',
             tabBarIcon: ({ focused }) => (

@@ -193,6 +193,7 @@ const Profile = (props) => {
                 javaScriptEnabled={true}
                 scalesPageToFit={false}
                 onError={() => console.log('err')}
+                showsHorizontalScrollIndicator={false}
             />
             <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 60 }}>
                 {

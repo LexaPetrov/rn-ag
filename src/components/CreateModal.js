@@ -10,7 +10,7 @@ const CreateModal = props => {
             <TouchableOpacity onPress={() => { setModalVisible(true) }}>
                 <View>
                     <Image style={{width: 50, height: 50}} source={require('../img/icon2.png')}/>
-                    <Text style={{textAlign: 'center', color: 'gray'}}>1.5.2</Text>
+                    <Text style={{textAlign: 'center', color: 'gray'}}>1.0.3</Text>
                 </View>
             </TouchableOpacity>
             <View>
